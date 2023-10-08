@@ -7,7 +7,7 @@ from fabric.api import run, put, env
 from os.path import exists
 env.hosts = ['54.90.59.80', '3.85.54.217']
 
-#!/usr/bin/python3
+
 """
 this script uses do_pack class.
 the do pack class helps in copressing the files.
