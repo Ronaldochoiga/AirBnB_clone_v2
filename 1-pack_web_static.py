@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 this script uses do_pack class.
 the do pack class helps in copressing the files.
