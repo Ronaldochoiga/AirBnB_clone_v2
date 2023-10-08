@@ -15,7 +15,7 @@ def do_deploy(archive_path):
     try:
         file_name = archive_path.split("/")[-1]
         no_exists = file_name.split(".")[0]
-        path = "/data/web_static/releases/"
+        path = ("/data/web_static/releases/{}".format
         put(archive_path, '/tmp/')
         run('mkdir -p {}{}/'.format(path, no_exists))
         run('tar -zxvf /tmp/{} -C {}{}/'.format(file_name, path, no_exists))
