@@ -1,53 +1,30 @@
 #!/usr/bin/python3
 """
-this script distributes the 1-1-pack_web_static.py archives to the web servers.
-this process should be done to all web servers.
+Fabric script based on the file 1-pack_web_static.py that distributes an
+archive to the web servers both web-01 and web-02
 """
-from fabric.api import run, put, env
+
+from fabric.api import put, run, env
 from os.path import exists
 env.hosts = ['54.90.59.80', '3.85.54.217']
 
 
-"""
-this script uses do_pack class.
-the do pack class helps in copressing the files.
-this give an output of .tgz file.
-"""
-
-from datetime import datetime
-from fabric.api import local
-from os.path import isdir
-
-def do_pack():
-    """
-    generates the archive in the tgz format
-    """
-    try:
-        date = datetime.now().strftime("%Y%m%d%H%M%S")
-        if isdir("versions") is False:
-            local("mkdir versions")
-        fname = "versions/web_static_{}.tgz".format(date)
-        local("tar -cvzf {} web_static".format(fname))
-        return fname
-    except:
-        return None
-
 def do_deploy(archive_path):
-    """this script uses do_deploy function"""
+    """the script distributes an archive to the web servers"""
     if exists(archive_path) is False:
         return False
     try:
-        fname = archive_path.split("/")[-1]
-        no_exists = fname.split(".")[0]
-        path = ("/data/web_static/releases/{}".format(fname))
+        file_n = archive_path.split("/")[-1]
+        no_ext = file_n.split(".")[0]
+        path = "/data/web_static/releases/"
         put(archive_path, '/tmp/')
-        run('mkdir -p {}{}/'.format(path, no_exists))
-        run('tar -zxvf /tmp/{} -C {}{}/'.format(fname, path, no_exists))
-        run('rm /tmp/{}'.format(fname))
-        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_exists))
-        run('rm -rf {}{}/web_static'.format(path, no_exists))
+        run('mkdir -p {}{}/'.format(path, no_ext))
+        run('tar -xzf /tmp/{} -C {}{}/'.format(file_n, path, no_ext))
+        run('rm /tmp/{}'.format(file_n))
+        run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_ext))
+        run('rm -rf {}{}/web_static'.format(path, no_ext))
         run('rm -rf /data/web_static/current')
-        run('ln -sf {}{}/ /data/web_static/current'.format(path, no_exists))
+        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
         return True
     except:
         return False
