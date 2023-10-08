@@ -7,6 +7,30 @@ from fabric.api import run, put, env
 from os.path import exists
 env.hosts = ['54.90.59.80', '3.85.54.217']
 
+#!/usr/bin/python3
+"""
+this script uses do_pack class.
+the do pack class helps in copressing the files.
+this give an output of .tgz file.
+"""
+
+from datetime import datetime
+from fabric.api import local
+from os.path import isdir
+
+def do_pack():
+    """
+    generates the archive in the tgz format
+    """
+    try:
+        date = datetime.now().strftime("%Y%m%d%H%M%S")
+        if isdir("versions") is False:
+            local("mkdir versions")
+        fname = "versions/web_static_{}.tgz".format(date)
+        local("tar -cvzf {} web_static".format(fname))
+        return fname
+    except:
+        return None
 
 def do_deploy(archive_path):
     """this script uses do_deploy function"""
