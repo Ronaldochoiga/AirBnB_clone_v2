@@ -13,13 +13,13 @@ def do_deploy(archive_path):
     if exists(archive_path) is False:
         return False
     try:
-        file_name = archive_path.split("/")[-1]
-        no_exists = file_name.split(".")[0]
-        path = ("/data/web_static/releases/{}".format
+        fname = archive_path.split("/")[-1]
+        no_exists = fname.split(".")[0]
+        path = ("/data/web_static/releases/{}".format(fname))
         put(archive_path, '/tmp/')
         run('mkdir -p {}{}/'.format(path, no_exists))
-        run('tar -zxvf /tmp/{} -C {}{}/'.format(file_name, path, no_exists))
-        run('rm /tmp/{}'.format(file_name))
+        run('tar -zxvf /tmp/{} -C {}{}/'.format(fname, path, no_exists))
+        run('rm /tmp/{}'.format(fname))
         run('mv {0}{1}/web_static/* {0}{1}/'.format(path, no_exists))
         run('rm -rf {}{}/web_static'.format(path, no_exists))
         run('rm -rf /data/web_static/current')
