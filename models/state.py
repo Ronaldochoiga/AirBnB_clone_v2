@@ -8,9 +8,9 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 
 
 class State(BaseModel, Base):
-    """This is the state class
+    """This is the class for State where located
     Attributes:
-        name: inputted name
+        name: input name in the parameters
     """
     __tablename__ = "states"
     name = Column(String(128), nullable=False)

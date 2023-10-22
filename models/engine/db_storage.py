@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is the database storage class for AirBnB"""
+"""This is the file storage class for AirBnB"""
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -14,7 +14,7 @@ from models.review import Review
 
 class DBStorage:
     """
-    Database storage Engine
+    Database Engine
     """
     __engine = None
     __session = None
@@ -36,7 +36,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """
-        returns the dictionary
+        returns a dictionary
         """
         sql_dict = {}
         models = self.models
@@ -53,14 +53,14 @@ class DBStorage:
 
     def new(self, obj):
         """
-        add the object
+        add the object to the current database session
         """
         if obj:
             self.__session.add(obj)
 
     def save(self):
         """
-        commit all changes
+        commit all changes of the current database session
         """
         self.__session.commit()
 
@@ -76,7 +76,7 @@ class DBStorage:
 
     def delete(self, obj=None):
         """
-        delete from db
+        delete from the current database session
         """
         if obj is not None:
             self.__session.delete(obj)
