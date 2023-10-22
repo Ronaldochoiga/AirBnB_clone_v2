@@ -1,29 +1,27 @@
 #!/usr/bin/python3
 """
-Script that starts a Flask web application inside the commandline
+starts a Flask web application
 """
 
-
+from flask import Flask, render_template
+from models import *
 from models import storage
-from flask import Flask, escape, render_template
 app = Flask(__name__)
 
 
-@app.route('/states_list', strict_slashes=False)
-def states_list():
-    """
-    render states HTML template from the 7th task
-    """
-    states = list(storage.all("State").values())
-    return render_template('7-states_list.html', states=states)
+@app.route('/hbnb_filters', strict_slashes=False)
+def filters():
+    """display a HTML page like 10-index.html from static"""
+    states = storage.all("State").values()
+    amenities = storage.all("Amenity").values()
+    return render_template('10-hbnb_filters.html', states=states,
+                           amenities=amenities)
 
 
 @app.teardown_appcontext
-def teardown(exception):
-    """
-    close storage which is either db or the file
-    """
+def teardown_db(exception):
+    """closes the storage on teardown as from the above function"""
     storage.close()
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port='5000')
